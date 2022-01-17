@@ -7,7 +7,12 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.CoroutineName
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.coroutines.CoroutineContext
 
 class MainActivity: AppCompatActivity() {
 
@@ -22,6 +27,7 @@ class MainActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        viewModel.onAttach()
 
         findViewById<Button>(R.id.bt).setOnClickListener{
             startSendIntent()
@@ -31,6 +37,10 @@ class MainActivity: AppCompatActivity() {
             startCallIntent()
         }
     }
+
+    val coroutineContext = CoroutineScope(
+        CoroutineName("Some name")
+    )
 
     override fun onStart() {
         super.onStart()
@@ -56,5 +66,10 @@ class MainActivity: AppCompatActivity() {
             data = Uri.parse("tel:5556737")
         }
         startActivity(Intent.createChooser(intentPhone, "Title some text"))
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModel.onDetach()
     }
 }
