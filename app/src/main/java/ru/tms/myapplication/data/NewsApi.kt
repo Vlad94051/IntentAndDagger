@@ -41,12 +41,12 @@ interface NewsApi {
      */
 
     @GET("sources")
-    fun getSource(
+   suspend fun getSource(
         @Query("category") category: String,
         @Query("language") language: String,
         @Query("country") country: String,
         @Query("apiKey") apiKey: String = RetrofitConstants.BASE_API_KEY
-    )
+    ): SourceResponse
 
     @GET("sources")
     suspend fun getSourcesByLanguage(

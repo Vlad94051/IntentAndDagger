@@ -15,8 +15,10 @@ class MainApplication: Application() {
     }
 
     private fun initDagger(): ApplicationComponent {
-        val builder: ApplicationComponent.Builder = DaggerApplicationComponent.builder()
-        val builderWithContext: ApplicationComponent.Builder = builder.bindContext(this@MainApplication)
-        return builderWithContext.build()
+
+        return DaggerApplicationComponent.builder()
+            .bindContext(this@MainApplication)
+            .build()
+
     }
 }

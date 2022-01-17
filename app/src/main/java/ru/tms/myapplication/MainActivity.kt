@@ -4,21 +4,42 @@ import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import androidx.lifecycle.ViewModel
 import javax.inject.Inject
 
 class MainActivity: AppCompatActivity() {
 
+    @Inject
+    lateinit var viewModel: MainViewModel
+
+    init {
+        MainApplication.appComponent?.inject(this)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+
         findViewById<Button>(R.id.bt).setOnClickListener{
             startSendIntent()
         }
 
         findViewById<Button>(R.id.btCall).setOnClickListener{
             startCallIntent()
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        initObservers()
+    }
+
+    private fun initObservers() {
+        viewModel.source.observe(this) { sources ->
+            Log.e("!!!SOURCES:", "$sources")
         }
     }
 
